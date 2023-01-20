@@ -15,7 +15,6 @@
       </div>
     </div>
   </div>
-  <button @click="test"></button>
 </template>
 
 <script>
