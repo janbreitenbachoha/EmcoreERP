@@ -79,21 +79,12 @@ export default createStore({
     },
 
     zuweisenArtikelBestellung(content, payload) {
-      console.log(payload.artikel)
+      console.log(payload.bestellung.order.bestellung)
 
       const ruluf = [...payload.artikel]
       console.log(ruluf)
 
-      var productItem = {
-        laufzeit: [
-          {
-            ruest: 0,
-            laufzeit: 0,
-            wer: "",
-            maschine: "",
-          },
-        ],
-      };
+    
 
   
         for (let item of ruluf) {
@@ -109,6 +100,18 @@ export default createStore({
           .catch((error) => {
             throw new Error(error);
           });
+
+          let productItem = {
+            bestellung:payload.bestellung.order.bestellung,
+            laufzeit: [
+              {
+                ruest: 0,
+                laufzeit: 0,
+                wer: "",
+                maschine: "",
+              },
+            ],
+          };
 
           axios
           .post(
