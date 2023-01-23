@@ -58,7 +58,7 @@ export default createStore({
               ...response.data[id].bestellungen 
             });
           }
-          console.log(bestellungDO);
+        
           context.commit("setBestellungen", bestellungDO);
         })
         .catch((error) => {

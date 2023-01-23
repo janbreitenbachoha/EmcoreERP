@@ -62,7 +62,9 @@
             </tbody>
           </table>
 
-          <button @click="anlegen()" class="btn btn-primary mt-4 col-12">Zuweisen</button>
+          <button @click="anlegen()" class="btn btn-primary mt-4 col-12">
+            Zuweisen
+          </button>
         </div>
       </div>
     </template>
@@ -123,7 +125,6 @@ export default {
         });
       }
 
-
       return users;
     },
 
@@ -149,6 +150,7 @@ export default {
     },
     hinzu(id) {
       this.mehr.push({ id: id.id, status: "Aktiv" });
+      console.log(id)
     },
     anlegen() {
       const zuweisen = {
@@ -158,15 +160,15 @@ export default {
       };
       this.$store.dispatch("zuweisenArtikelBestellung", zuweisen);
       this.$toast.add({
-          severity: "success",
-          summary: "Gespeichert",
-          detail: "Bestellung wurde aktualisiert",
-          life: 3000,
-        });
+        severity: "success",
+        summary: "Gespeichert",
+        detail: "Bestellung wurde aktualisiert",
+        life: 3000,
+      });
       setTimeout(() => {
-          this.$store.dispatch("fetchKunden");
-          this.$store.dispatch("fetchProducts");
-        }, 500);
+        this.$store.dispatch("fetchKunden");
+        this.$store.dispatch("fetchProducts");
+      }, 500);
     },
   },
 };

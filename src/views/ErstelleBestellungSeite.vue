@@ -36,8 +36,27 @@
               Speichern
             </button>
           </form>
-
-          <form></form>
+          <div class="container mt-2">
+            <input
+              class="form-control"
+              type="text"
+              v-model="search"
+              placeholder="Artikel Suchen"
+              aria-label="default input example"
+            />
+          </div>
+          <div>
+            <DataTable
+              :value="sort"
+              responsiveLayout="scroll"
+              :paginator="true"
+              :rows="10"
+              stripedRows
+            >
+              <Column field="order.bestellung" header="Bestellung" :sortable="true"></Column>
+              <Column field="name" header="Name" :sortable="true"></Column>
+            </DataTable>
+          </div>
         </div>
       </div>
     </template>
@@ -48,15 +67,20 @@
 import TheShopLayout from "@/views/TheShopLayout";
 import Dropdown from "primevue/dropdown";
 import Toast from "primevue/toast";
+import DataTable from "primevue/datatable";
+import Column from "primevue/column";
 export default {
   name: "CreateProductPage",
   components: {
     TheShopLayout,
     Dropdown,
     Toast,
+    DataTable,
+    Column,
   },
   data() {
     return {
+      search: "",
       inputDate: null,
       product: {
         kunde: "",
@@ -68,6 +92,36 @@ export default {
   computed: {
     kunden() {
       return this.$store.getters.kunden;
+    },
+
+    sort() {
+      let wert = Object.values(this.kunden).flatMap(({ name, bestellungen }) =>
+        Object.values(bestellungen).map((order) => ({ order, name }))
+      );
+
+      // Kopie des users-Arrays erstellen
+      let users = wert;
+
+      // Wenn search nicht leer ist, Ergebnisse filtern
+      if (this.search) {
+        // Sucheingabe in Kleinbuchstaben umwandeln und Sonderzeichen entfernen
+        const search = this.search
+          .toLowerCase()
+          .replace(/[+\-/\\(){}[\]<>!§$%&=?*#€¿&_.,:;]/g, "");
+        // Sucheingabe in ein Array von Wörtern umwandeln
+        const searchWords = search.split(/\s+/);
+        let searchRegex = new RegExp(searchWords.join("|"), "i");
+        let filteredUsers = [];
+        users.forEach((user) => {
+          if (searchRegex.test(user.order.bestellung)) {
+            filteredUsers.push(user);
+          }
+        });
+
+        return filteredUsers;
+      }
+
+      return users;
     },
   },
   methods: {
