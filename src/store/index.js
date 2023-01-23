@@ -102,6 +102,7 @@ export default createStore({
           });
 
           let productItem = {
+            id:payload.bestellung.orderId,
             bestellung:payload.bestellung.order.bestellung,
             laufzeit: [
               {
@@ -237,6 +238,7 @@ export default createStore({
       const productItem = {
         bestellung: payload.bestellung,
         aktiv: true,
+        lieferdatum: payload.datum
       };
       axios
         .post(

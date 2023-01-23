@@ -115,7 +115,7 @@ export default {
       return result;
     },
     hinzu(id) {
-      this.mehr.push({id: id.id});
+      this.mehr.push({id: id.id, status: "Aktiv"});
     },
     anlegen() {
       const zuweisen = {

@@ -29,10 +29,14 @@
                 id="exampleInputPassword1"
               />
             </div>
+            <div class="field col-12 md:col-4">
+                <label for="multiplemonths" class="form-label">Lieferdatum</label>
+                <Calendar inputId="multiplemonths" class="form-control" v-model="product.datum" :numberOfMonths="3" dateFormat="mm-dd-yy"  />
+            </div>
             <button
               type="submit"
               @click="createOrder()"
-              class="btn btn-primary"
+              class="btn btn-primary mt-4"
             >
               Speichern
             </button>
@@ -49,18 +53,21 @@
 import TheShopLayout from "@/views/TheShopLayout";
 import Dropdown from "primevue/dropdown";
 import Toast from "primevue/toast";
+import Calendar from 'primevue/calendar';
 export default {
   name: "CreateProductPage",
   components: {
     TheShopLayout,
     Dropdown,
     Toast,
+    Calendar,
   },
   data() {
     return {
       product: {
         kunde: "",
         bestellung: "",
+        datum:"",
       },
     };
   },
