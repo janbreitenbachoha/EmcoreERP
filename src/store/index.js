@@ -5,16 +5,21 @@ export default createStore({
   state: {
     products: [],
     kunden: [],
+    bestellungen: [],
   },
   getters: {
     products: (state) => state.products,
     kunden: (state) => state.kunden,
+    bestellung: (state) => state.bestellungen,
     product: (state) => (id) =>
       state.products.find((product) => product.id === id),
   },
   mutations: {
     setProducts(state, payload) {
       state.products = payload;
+    },
+    setBestellungen(state, payload) {
+      state.bestellungen = payload;
     },
     setKunden(state, payload) {
       state.kunden = payload;
@@ -36,6 +41,25 @@ export default createStore({
             });
           }
           context.commit("setProducts", productsDO);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+
+    fetchBestellungen(context) {
+      axios
+        .get(`https://emcore-d87fa-default-rtdb.firebaseio.com/kunden.json`)
+        .then((response) => {
+          const bestellungDO = [];
+
+          for (const id in response.data) {
+            bestellungDO.push({ 
+              ...response.data[id].bestellungen 
+            });
+          }
+          console.log(bestellungDO);
+          context.commit("setBestellungen", bestellungDO);
         })
         .catch((error) => {
           console.log(error);
@@ -79,17 +103,13 @@ export default createStore({
     },
 
     zuweisenArtikelBestellung(content, payload) {
-      console.log(payload.bestellung.order.bestellung)
+      console.log(payload.bestellung.order.bestellung);
 
-      const ruluf = [...payload.artikel]
-      console.log(ruluf)
+      const ruluf = [...payload.artikel];
+      console.log(ruluf);
 
-    
-
-  
-        for (let item of ruluf) {
-
-          axios
+      for (let item of ruluf) {
+        axios
           .post(
             `https://emcore-d87fa-default-rtdb.firebaseio.com/kunden/${payload.kunde.id}/bestellungen/${payload.bestellung.orderId}/artikel.json`,
             item
@@ -101,20 +121,20 @@ export default createStore({
             throw new Error(error);
           });
 
-          let productItem = {
-            id:payload.bestellung.orderId,
-            bestellung:payload.bestellung.order.bestellung,
-            laufzeit: [
-              {
-                ruest: 0,
-                laufzeit: 0,
-                wer: "",
-                maschine: "",
-              },
-            ],
-          };
+        let productItem = {
+          id: payload.bestellung.orderId,
+          bestellung: payload.bestellung.order.bestellung,
+          laufzeit: [
+            {
+              ruest: 0,
+              laufzeit: 0,
+              wer: "",
+              maschine: "",
+            },
+          ],
+        };
 
-          axios
+        axios
           .post(
             `https://emcore-d87fa-default-rtdb.firebaseio.com/artikel/${item.id}/bestellungen.json`,
             productItem
@@ -125,10 +145,7 @@ export default createStore({
           .catch((error) => {
             throw new Error(error);
           });
-    
-        }
-   
-  
+      }
     },
 
     clearOrder(content, [payload, id]) {
@@ -238,7 +255,7 @@ export default createStore({
       const productItem = {
         bestellung: payload.bestellung,
         aktiv: true,
-        lieferdatum: payload.datum
+        lieferdatum: payload.datum,
       };
       axios
         .post(
@@ -253,13 +270,12 @@ export default createStore({
         });
     },
     createCustomer(context, payload) {
-      const kunde = {
-        name: payload.name,
-      };
+
+      console.log(payload)
       axios
         .post(
           `https://emcore-d87fa-default-rtdb.firebaseio.com/kunden.json`,
-          kunde
+          payload
         )
         .then((response) => {
           console.log(response);

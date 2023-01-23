@@ -43,7 +43,7 @@
             <button
               type="submit"
               @click="createProduct()"
-              class="btn btn-primary"
+              class="btn btn-primary mt-4 col-12"
             >
               Speichern
             </button>

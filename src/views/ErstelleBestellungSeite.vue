@@ -1,7 +1,6 @@
 <template>
   <TheShopLayout>
     <template #default>
-
       <div class="container">
         <Toast />
         <div class="row m-5">
@@ -29,14 +28,10 @@
                 id="exampleInputPassword1"
               />
             </div>
-            <div class="field col-12 md:col-4">
-                <label for="multiplemonths" class="form-label">Lieferdatum</label>
-                <Calendar inputId="multiplemonths" class="form-control" v-model="product.datum" :numberOfMonths="3" dateFormat="mm-dd-yy"  />
-            </div>
             <button
               type="submit"
               @click="createOrder()"
-              class="btn btn-primary mt-4"
+              class="btn btn-primary mt-4 col-12"
             >
               Speichern
             </button>
@@ -53,21 +48,20 @@
 import TheShopLayout from "@/views/TheShopLayout";
 import Dropdown from "primevue/dropdown";
 import Toast from "primevue/toast";
-import Calendar from 'primevue/calendar';
 export default {
   name: "CreateProductPage",
   components: {
     TheShopLayout,
     Dropdown,
     Toast,
-    Calendar,
   },
   data() {
     return {
+      inputDate: null,
       product: {
         kunde: "",
         bestellung: "",
-        datum:"",
+        datum: null,
       },
     };
   },
@@ -78,12 +72,17 @@ export default {
   },
   methods: {
     createOrder() {
-     this.$store.dispatch("storeOrder", this.product);
-      this.$toast.add({severity:'success', summary: 'Gespeichert', detail:'Artikel wurde angelegt', life: 3000});
+      this.$store.dispatch("storeOrder", this.product);
+      this.$toast.add({
+        severity: "success",
+        summary: "Gespeichert",
+        detail: "Artikel wurde angelegt",
+        life: 3000,
+      });
 
-      this.product.kunde="";
-      this.product.bezeichnung="";
-      this.product.zeichnungsnummer="";
+      this.product.kunde = "";
+      this.product.bezeichnung = "";
+      this.product.zeichnungsnummer = "";
 
       setTimeout(() => {
         this.$store.dispatch("fetchProducts");

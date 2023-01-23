@@ -135,13 +135,13 @@
               Speichern
             </button>
 
-            <button
+            <!-- <button
               type="submit"
               @click="deletOrder()"
               class="btn btn-danger col-2"
             >
               Bestellung Löschen
-            </button>
+            </button> -->
           </div>
         </div>
       </div>

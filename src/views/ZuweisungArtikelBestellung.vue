@@ -2,6 +2,7 @@
   <TheShopLayout>
     <template #default>
       <div class="container">
+        <Toast />
         <div class="row m-5">
           <h2>Artikel Zuweisen</h2>
         </div>
@@ -26,7 +27,15 @@
             placeholder="Wähle eine Bestellung"
           />
           <label for="exampleInputEmail1" class="form-label">Artikel</label>
-
+          <div class="container mt-2">
+            <input
+              class="form-control"
+              type="text"
+              v-model="search"
+              placeholder="Artikel Suchen"
+              aria-label="default input example"
+            />
+          </div>
           <table class="table">
             <thead>
               <tr>
@@ -53,7 +62,7 @@
             </tbody>
           </table>
 
-          <button @click="anlegen()">Zuweisen</button>
+          <button @click="anlegen()" class="btn btn-primary mt-4 col-12">Zuweisen</button>
         </div>
       </div>
     </template>
@@ -63,14 +72,17 @@
 <script>
 import TheShopLayout from "@/views/TheShopLayout";
 import Dropdown from "primevue/dropdown";
+import Toast from "primevue/toast";
 export default {
   name: "CreateProductPage",
   components: {
     TheShopLayout,
     Dropdown,
+    Toast,
   },
   data() {
     return {
+      search: "",
       kunde: "",
       bestellung: "",
       artikel: "",
@@ -89,7 +101,30 @@ export default {
       const filteredProducts = Object.values(this.product).filter(
         (p) => p.kunde.name === this.kunde.name
       );
-      return filteredProducts;
+
+      // Kopie des users-Arrays erstellen
+      let users = filteredProducts;
+      // Wenn search nicht leer ist, Ergebnisse filtern
+      if (this.search) {
+        // Sucheingabe in Kleinbuchstaben umwandeln und Sonderzeichen entfernen
+        const search = this.search
+          .toLowerCase()
+          .replace(/[+\-/\\(){}[\]<>!§$%&=?*#€¿&_.,:;]/g, "");
+        // Sucheingabe in ein Array von Wörtern umwandeln
+        const searchWords = search.split(/\s+/);
+        users = users.filter((user) => {
+          // Suche in den Feldern name und email durchführen
+          let name = user.bezeichnung
+            .toLowerCase()
+            .replace(/[+\-/\\(){}[\]<>!§$%&=?*#€¿&_.,:;]/g, "");
+          return searchWords.every((searchWord) => {
+            return name.includes(searchWord);
+          });
+        });
+      }
+
+
+      return users;
     },
 
     test() {
@@ -101,10 +136,8 @@ export default {
         customer && customer.bestellungen
           ? Object.entries(customer.bestellungen)
           : null;
-          
 
       const test = oo ? oo.map((o) => ({ order: o[1], orderId: o[0] })) : [];
-
 
       return test.reverse();
     },
@@ -115,7 +148,7 @@ export default {
       return result;
     },
     hinzu(id) {
-      this.mehr.push({id: id.id, status: "Aktiv"});
+      this.mehr.push({ id: id.id, status: "Aktiv" });
     },
     anlegen() {
       const zuweisen = {
@@ -124,6 +157,16 @@ export default {
         artikel: this.mehr,
       };
       this.$store.dispatch("zuweisenArtikelBestellung", zuweisen);
+      this.$toast.add({
+          severity: "success",
+          summary: "Gespeichert",
+          detail: "Bestellung wurde aktualisiert",
+          life: 3000,
+        });
+      setTimeout(() => {
+          this.$store.dispatch("fetchKunden");
+          this.$store.dispatch("fetchProducts");
+        }, 500);
     },
   },
 };
