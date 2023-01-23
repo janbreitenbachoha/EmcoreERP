@@ -79,23 +79,52 @@ export default createStore({
     },
 
     zuweisenArtikelBestellung(content, payload) {
+      console.log(payload.artikel)
 
-      const test = {
-        artikel : payload.artikel.customer.id
-      }
+      const ruluf = [...payload.artikel]
+      console.log(ruluf)
 
+      var productItem = {
+        laufzeit: [
+          {
+            ruest: 0,
+            laufzeit: 0,
+            wer: "",
+            maschine: "",
+          },
+        ],
+      };
 
-      axios
-        .post(
-          `https://emcore-d87fa-default-rtdb.firebaseio.com/kunden/${payload.kunde.id}/bestellungen/${payload.bestellung.orderId}/artikel.json`,
-          test
-        )
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((error) => {
-          throw new Error(error);
-        });
+  
+        for (let item of ruluf) {
+
+          axios
+          .post(
+            `https://emcore-d87fa-default-rtdb.firebaseio.com/kunden/${payload.kunde.id}/bestellungen/${payload.bestellung.orderId}/artikel.json`,
+            item
+          )
+          .then((response) => {
+            console.log(response);
+          })
+          .catch((error) => {
+            throw new Error(error);
+          });
+
+          axios
+          .post(
+            `https://emcore-d87fa-default-rtdb.firebaseio.com/artikel/${item.id}/bestellungen.json`,
+            productItem
+          )
+          .then((response) => {
+            console.log(response);
+          })
+          .catch((error) => {
+            throw new Error(error);
+          });
+    
+        }
+   
+  
     },
 
     clearOrder(content, [payload, id]) {

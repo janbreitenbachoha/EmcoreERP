@@ -99,32 +99,29 @@ export default {
 
       const oo =
         customer && customer.bestellungen
-          ? Object.values(customer.bestellungen)
+          ? Object.entries(customer.bestellungen)
           : null;
+          
 
-      const test = oo ? oo.map((o) => ({ order: o, orderId: o.id })) : [];
+      const test = oo ? oo.map((o) => ({ order: o[1], orderId: o[0] })) : [];
+
 
       return test.reverse();
     },
   },
   methods: {
     aktiviert(id) {
-      console.log(id);
       const result = this.mehr.some((element) => element.id === id);
-      console.log(result);
       return result;
     },
     hinzu(id) {
-
       this.mehr.push({id: id.id});
-
-      console.log(this.mehr);
     },
     anlegen() {
       const zuweisen = {
         kunde: this.kunde,
         bestellung: this.bestellung,
-        artikel: this.artikel,
+        artikel: this.mehr,
       };
       this.$store.dispatch("zuweisenArtikelBestellung", zuweisen);
     },

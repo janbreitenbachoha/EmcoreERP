@@ -108,32 +108,23 @@ export default {
   },
     createOrder() {
       const id = { id: this.product.id };
-      Object.assign(this.createOrderAr, id);
+Object.assign(this.createOrderAr, id);  //hinzufügen der Produkt id in das createOrderAr Object
 
-      if (this.product.bestellungen == undefined) {
-        this.$store.dispatch("addOrder", this.createOrderAr);
-      } else {
-        this.$store.dispatch("addOrder", this.createOrderAr);
-      }
-      if (!this.createOrderAr.bestellung){
-        console.log("nicht leer sein");  
-        return false;
-    }else{
-      setTimeout(() => {
-        this.$store.dispatch("fetchProducts");
-        this.$router.go(-1)
-      }, 500);
-    }
+this.$store.dispatch("addOrder", this.createOrderAr);
 
-      var self = this; //you need this because *this* will refer to Object.keys below`
-
-      //Iterate through each object field, key is name of the object field`
-      Object.keys(this.createOrderAr).forEach(function(key) {
-        self.createOrderAr[key] = '';
-      });
+setTimeout(() => {
+  this.$store.dispatch("fetchProducts");
+  this.$router.go(-1);
+  this.resetCreateOrderAr();
+}, 500);
 
 
     },
+    resetCreateOrderAr() {
+    Object.keys(this.createOrderAr).forEach((key) => {
+        this.createOrderAr[key] = '';
+    });
+  }
   },
 };
 </script>
