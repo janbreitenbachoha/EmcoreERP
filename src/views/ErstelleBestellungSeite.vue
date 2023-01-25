@@ -36,16 +36,16 @@
               Speichern
             </button>
           </form>
-          <div class="container mt-2">
+          <div class="container mt-4">
             <input
               class="form-control"
               type="text"
               v-model="search"
-              placeholder="Artikel Suchen"
+              placeholder="Bestellung Suchen"
               aria-label="default input example"
             />
           </div>
-          <div>
+          <div class="mt-4">
             <DataTable
               :value="sort"
               responsiveLayout="scroll"
@@ -95,9 +95,16 @@ export default {
     },
 
     sort() {
+      
+      let test = Object.values(this.kunden)
+
+      console.log(test)
+
       let wert = Object.values(this.kunden).flatMap(({ name, bestellungen }) =>
-        Object.values(bestellungen).map((order) => ({ order, name }))
+        bestellungen ? Object.values(bestellungen).map((order) => ({ order, name })) : null
       );
+
+      console.log(wert)
 
       // Kopie des users-Arrays erstellen
       let users = wert;

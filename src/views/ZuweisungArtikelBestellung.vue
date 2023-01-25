@@ -3,7 +3,7 @@
     <template #default>
       <div class="container">
         <Toast />
-        <div class="row m-5">
+        <div class="row mt-5">
           <h2>Artikel Zuweisen</h2>
         </div>
         <div class="mb-3 d-flex flex-column">
@@ -13,6 +13,7 @@
             id="exampleInputEmail1"
             :options="kunden"
             :editable="true"
+            :filter="true"
             optionLabel="name"
             placeholder="Wähle einen Kunden"
           />
@@ -23,20 +24,20 @@
             :options="test"
             :editable="true"
             :disabled="!kunde"
+            :filter="true"
             optionLabel="order.bestellung"
             placeholder="Wähle eine Bestellung"
           />
-          <label for="exampleInputEmail1" class="form-label">Artikel</label>
-          <div class="container mt-2">
+          <div class="container mt-4">
             <input
               class="form-control"
               type="text"
               v-model="search"
-              placeholder="Artikel Suchen"
+              placeholder="Bestellung Suchen"
               aria-label="default input example"
             />
           </div>
-          <table class="table">
+          <table class="table mt-4">
             <thead>
               <tr>
                 <th scope="col">#</th>

@@ -16,6 +16,7 @@
                 :editable="true"
                 optionLabel="name"
                 placeholder="Wähle einen Kunden"
+                :filter="true"
               />
             </div>
             <div class="mb-3">
@@ -88,7 +89,7 @@ export default {
       bezeichnung: this.product.bezeichnung,
       zeichnungsnummer : this.product.zeichnungsnummer,
       kunde : {
-      id: this.product.kunde.id,
+      id: this.product.kunde._ID,
       name: this.product.kunde.name,
     }
     }
