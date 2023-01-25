@@ -84,12 +84,26 @@ export default {
   },
   methods: {
     createProduct() {
+      var mongoObjectId = function () {
+						var timestamp = ((new Date().getTime() / 1000) | 0).toString(16);
+						return (
+							timestamp +
+							"xxxxxxxxxxxxxxxx"
+								.replace(/[x]/g, function () {
+									return ((Math.random() * 16) | 0).toString(16);
+								})
+								.toLowerCase()
+						);
+					};
+
+          const id = mongoObjectId();
 
     const name = {
+      _ID: id,
       bezeichnung: this.product.bezeichnung,
       zeichnungsnummer : this.product.zeichnungsnummer,
       kunde : {
-      id: this.product.kunde._ID,
+      kundenID: this.product.kunde._ID,
       name: this.product.kunde.name,
     }
     }

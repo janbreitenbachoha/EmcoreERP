@@ -233,6 +233,7 @@ export default createStore({
 
     storeProduct(context, payload) {
       const productItem = {
+        _ID: payload._ID,
         kunde: payload.kunde,
         bezeichnung: payload.bezeichnung,
         zeichnungsnummer: payload.zeichnungsnummer,
