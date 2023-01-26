@@ -1,6 +1,7 @@
 import { createStore } from "vuex";
 import axios from "axios";
 
+
 export default createStore({
   state: {
     products: [],
@@ -103,11 +104,8 @@ export default createStore({
     },
 
     zuweisenArtikelBestellung(content, payload) {
-      console.log(payload.bestellung.order.bestellung);
 
       const ruluf = [...payload.artikel];
-      console.log(ruluf);
-
       for (let item of ruluf) {
         axios
           .post(
@@ -121,8 +119,10 @@ export default createStore({
             throw new Error(error);
           });
 
+          console.log(item.id)
+
         let productItem = {
-          id: payload.bestellung.orderId,
+          bestellungID: payload.bestellung.orderId,
           bestellung: payload.bestellung.order.bestellung,
           laufzeit: [
             {
@@ -136,7 +136,7 @@ export default createStore({
 
         axios
           .post(
-            `https://emcore-d87fa-default-rtdb.firebaseio.com/artikel/${item.id}/bestellungen.json`,
+            `https://emcore-d87fa-default-rtdb.firebaseio.com/artikel/${item.artikelID}/bestellungen.json`,
             productItem
           )
           .then((response) => {
@@ -233,7 +233,6 @@ export default createStore({
 
     storeProduct(context, payload) {
       const productItem = {
-        _ID: payload._ID,
         kunde: payload.kunde,
         bezeichnung: payload.bezeichnung,
         zeichnungsnummer: payload.zeichnungsnummer,
@@ -252,6 +251,7 @@ export default createStore({
     },
 
     storeOrder(context, payload) {
+
       var id = payload.kunde.id;
       const productItem = {
         bestellung: payload.bestellung,

@@ -146,14 +146,18 @@ export default {
   },
   methods: {
     aktiviert(id) {
-      const result = this.mehr.some((element) => element.id === id);
+      const result = this.mehr.some((element) => element.artikelID === id);
+      console.log(id)
       return result;
     },
     hinzu(id) {
-      this.mehr.push({ id: id.id, status: "Aktiv" });
-      console.log(id)
+
+
+      this.mehr.push({ artikelID: id.id, status: "Aktiv" });
+     
     },
     anlegen() {
+
       const zuweisen = {
         kunde: this.kunde,
         bestellung: this.bestellung,

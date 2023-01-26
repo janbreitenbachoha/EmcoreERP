@@ -108,7 +108,8 @@ export default {
   },
     createOrder() {
       const id = { id: this.product.id };
-Object.assign(this.createOrderAr, id);  //hinzufügen der Produkt id in das createOrderAr Object
+
+      Object.assign(this.createOrderAr, id);  //hinzufügen der Produkt id in das createOrderAr Object
 
 this.$store.dispatch("addOrder", this.createOrderAr);
 
