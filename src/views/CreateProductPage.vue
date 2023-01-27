@@ -84,6 +84,18 @@ export default {
   },
   methods: {
     createProduct() {
+
+				if (!this.product.kunde || !this.product.bezeichnung) {
+					console.log("leer");
+					this.$toast.add({
+						severity: "error",
+						summary: "Achtung",
+						detail: "Feld darf nicht leer sein",
+						life: 3000,
+					});
+				} else {
+
+        
       
 
     const name = {
@@ -108,7 +120,9 @@ export default {
         this.$store.dispatch("fetchProducts");
         this.$store.dispatch("fetchKunden");
       }, 500);
+    }
     },
+
   },
 };
 </script>

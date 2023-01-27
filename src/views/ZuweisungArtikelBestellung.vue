@@ -171,6 +171,8 @@ export default {
         detail: "Bestellung wurde aktualisiert",
         life: 3000,
       });
+      this.kunde="";
+      this.bestellung="";
       setTimeout(() => {
         this.$store.dispatch("fetchKunden");
         this.$store.dispatch("fetchProducts");

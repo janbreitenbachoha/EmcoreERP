@@ -133,6 +133,20 @@ export default {
   },
   methods: {
     createOrder() {
+
+
+      if (!this.product.kunde || !this.product.bestellung) {
+					console.log("leer");
+					this.$toast.add({
+						severity: "error",
+						summary: "Achtung",
+						detail: "Feld darf nicht leer sein",
+						life: 3000,
+					});
+				} else {
+
+        
+
       this.$store.dispatch("storeOrder", this.product);
       this.$toast.add({
         severity: "success",
@@ -148,6 +162,7 @@ export default {
         this.$store.dispatch("fetchProducts");
         this.$store.dispatch("fetchKunden");
       }, 500);
+    }
     },
   },
 };
