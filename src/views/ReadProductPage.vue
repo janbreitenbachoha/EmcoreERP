@@ -97,9 +97,9 @@
 												v-for="key in reversedKeys"
 												:key="key"
 												class="btn btn-primary col-2 m-1"
-												@click="openModal(product.bestellungen[key], key)"
+												@click="openModal(product.bestellungen[key.orderId], key)"
 											>
-												{{ product.bestellungen[key].bestellung }}
+												{{ key.orderId }}
 											</button>
 
 											<!--
@@ -171,27 +171,29 @@
 				return Object.values(this.$store.getters.kunden);
 			},
 			reversedKeys() {
-				const test = Object.values(this.product.bestellungen);
-				const lalo = [];
-				const laloo = [];
 
-				for (let item of test) {
-					lalo.push(item.bestellungID);
+				const matchingOrders = [];
+
+				const articleOrders = Object.values(this.product.bestellungen)
+			
+				
+				for (const customer of Object.values(this.kunden)) {
+					
+					for (const [orderId, order] of Object.entries(customer.bestellungen)) {
+						
+						if (
+							articleOrders.some(
+								(articleOrder) =>
+									orderId === articleOrder.bestellungID
+							)
+						) {
+							matchingOrders.push({orderId, order});
+						}
+					}
 				}
-
-				const filteredProducts = Object.values(this.kunden).filter(
-					(p) => p.name === this.product.kunde.name
-				);
-
-				filteredProducts.forEach(function (item) {
-					laloo.push(item.bestellungen );
-				});
-
-				console.log(laloo);
-
-				console.log(lalo);
-
-				return false;
+				
+				console.log(matchingOrders)
+				return matchingOrders;
 			},
 		},
 		methods: {
