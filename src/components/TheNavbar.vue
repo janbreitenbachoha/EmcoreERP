@@ -13,7 +13,7 @@
           <router-link to="/anlegen" class="nav-link">Artikel anlegen</router-link>
         </li>
         <li class="nav-item active">
-          <router-link to="/BestellungAnlegen" class="nav-link">Bestellung anlegen</router-link>
+          <router-link to="/BestellungAnlegen" class="nav-link">Bestellungen</router-link>
         </li>
         <li class="nav-item active">
           <router-link to="/ArtikelZuordnen" class="nav-link">Artikel Zuweisen</router-link>

@@ -38,7 +38,7 @@
 						aria-label="default input example"
 					/>
 				</div>
-				<table class="table">
+				<table class="table mt-4">
 					<thead>
 						<tr>
 							<th scope="col">#</th>

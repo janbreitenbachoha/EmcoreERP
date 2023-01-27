@@ -33,7 +33,7 @@
               class="form-control"
               type="text"
               v-model="search"
-              placeholder="Bestellung Suchen"
+              placeholder="Artikel Suchen"
               aria-label="default input example"
             />
           </div>

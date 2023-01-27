@@ -8,6 +8,7 @@
           <div class="col-6">
             <label for="bestellung">Bestellung</label>
             <input
+              disabled
               type="text"
               class="form-control"
               id="bestellung"
@@ -24,7 +25,7 @@
             />
           </div>
           <div class="col-6">
-            <label for="preis">Preis</label>
+            <label for="preis">Artikel Preis</label>
             <input
               type="text"
               class="form-control"
@@ -43,7 +44,7 @@
               v-model="position.werkstoff"
             />
           </div>
-          <div class="col-6">
+          <div class="col-4">
             <label for="masse">Rohmaterial</label>
             <input
               type="text"
@@ -51,6 +52,46 @@
               id="masse"
               aria-describedby="emailHelp"
               v-model="position.masse"
+            />
+          </div>
+          <div class="col-4">
+            <label for="masse">Lieferant</label>
+            <input
+              type="text"
+              class="form-control"
+              id="masse"
+              aria-describedby="emailHelp"
+              v-model="position.lieferant"
+            />
+          </div>
+          <div class="col-4">
+            <label for="masse">Material Preis stk.</label>
+            <input
+              type="text"
+              class="form-control"
+              id="masse"
+              aria-describedby="emailHelp"
+              v-model="position.preisMaterial"
+            />
+          </div>
+          <div class="col-6">
+            <label for="masse">Oberfläche</label>
+            <input
+              type="text"
+              class="form-control"
+              id="masse"
+              aria-describedby="emailHelp"
+              v-model="position.oberflaeche"
+            />
+          </div>
+          <div class="col-6">
+            <label for="masse">Oberfläche Lieferant</label>
+            <input
+              type="text"
+              class="form-control"
+              id="masse"
+              aria-describedby="emailHelp"
+              v-model="position.oberflaecheLieferant"
             />
           </div>
           <div class="col-12">

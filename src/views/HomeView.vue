@@ -1,12 +1,13 @@
 <template>
-  <div class="container mt-2">
+  <div class="container mt-2 ">
     <input
-      class="form-control"
+      class=" col-8 m-3 p-2"
       type="text"
       v-model="search"
-      placeholder="Suche"
+      placeholder="Artikel Suchen"
       aria-label="default input example"
     />
+    <button class="col-2 p-2 btn btn-primary">Neuen Artikel Anlegen</button>
   </div>
   <div class="d-flex justify-content-center">
     <div class="row container d-flex justify-content-center">
