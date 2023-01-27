@@ -142,11 +142,11 @@ export default {
       });
 
       this.product.kunde = "";
-      this.product.bezeichnung = "";
-      this.product.zeichnungsnummer = "";
+      this.product.bestellung = "";
 
       setTimeout(() => {
         this.$store.dispatch("fetchProducts");
+        this.$store.dispatch("fetchKunden");
       }, 500);
     },
   },

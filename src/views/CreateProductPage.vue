@@ -106,6 +106,7 @@ export default {
 
       setTimeout(() => {
         this.$store.dispatch("fetchProducts");
+        this.$store.dispatch("fetchKunden");
       }, 500);
     },
   },

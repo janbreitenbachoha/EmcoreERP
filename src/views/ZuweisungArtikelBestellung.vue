@@ -101,6 +101,7 @@ export default {
     },
 
     sort() {
+
       const filteredProducts = Object.values(this.product).filter(
         (p) => p.kunde.name === this.kunde.name
       );
