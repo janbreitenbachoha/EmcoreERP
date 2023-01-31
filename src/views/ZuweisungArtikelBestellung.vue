@@ -43,6 +43,7 @@
                 <th scope="col">#</th>
                 <th scope="col">Bezeichnung</th>
                 <th scope="col">Zeichnungsnummer</th>
+                <th scope="col">menge</th>
                 <th scope="col">Hinzufügen</th>
               </tr>
             </thead>
@@ -52,9 +53,15 @@
                 <td>{{ artikel.bezeichnung }}</td>
                 <td>{{ artikel.zeichnungsnummer }}</td>
                 <td>
+                  <input
+                    type="text"
+                    @input="updateValue(index, $event.target.value)"
+                  />
+                </td>
+                <td>
                   <button
                     :disabled="aktiviert(artikel.id)"
-                    @click="hinzu(artikel)"
+                    @click="hinzu(artikel, inputValues[index])"
                   >
                     Hinzufügen
                   </button>
@@ -89,6 +96,7 @@ export default {
       kunde: "",
       bestellung: "",
       artikel: "",
+      inputValues: [],
       mehr: [],
     };
   },
@@ -101,7 +109,6 @@ export default {
     },
 
     sort() {
-
       const filteredProducts = Object.values(this.product).filter(
         (p) => p.kunde.name === this.kunde.name
       );
@@ -148,17 +155,17 @@ export default {
   methods: {
     aktiviert(id) {
       const result = this.mehr.some((element) => element.artikelID === id);
-      console.log(id)
       return result;
     },
-    hinzu(id) {
-
-
-      this.mehr.push({ artikelID: id.id, status: "Aktiv" });
-     
+    updateValue(index, value) {
+      this.inputValues[index] = value;
+    },
+    hinzu(id, menge) {
+      
+      this.mehr.push({ artikelID: id.id, menge: menge, status: "Aktiv" });
+      console.log(this.mehr)
     },
     anlegen() {
-
       const zuweisen = {
         kunde: this.kunde,
         bestellung: this.bestellung,
@@ -171,8 +178,8 @@ export default {
         detail: "Bestellung wurde aktualisiert",
         life: 3000,
       });
-      this.kunde="";
-      this.bestellung="";
+      this.kunde = "";
+      this.bestellung = "";
       setTimeout(() => {
         this.$store.dispatch("fetchKunden");
         this.$store.dispatch("fetchProducts");

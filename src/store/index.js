@@ -105,10 +105,16 @@ export default createStore({
 		zuweisenArtikelBestellung(content, payload) {
 			const ruluf = [...payload.artikel];
 			for (let item of ruluf) {
+
+				const laden = {
+					artikelID: item.artikelID,
+					status: item.status
+				}
+
 				axios
 					.post(
 						`https://emcore-d87fa-default-rtdb.firebaseio.com/kunden/${payload.kunde.id}/bestellungen/${payload.bestellung.orderId}/artikel.json`,
-						item
+						laden
 					)
 					.then((response) => {
 						console.log(response);
@@ -117,10 +123,11 @@ export default createStore({
 						throw new Error(error);
 					});
 
-				console.log(item.id);
+				console.log(item);
 
 				let productItem = {
 					bestellungID: payload.bestellung.orderId,
+					menge: item.menge,
 					laufzeit: [
 						{
 							ruest: 0,

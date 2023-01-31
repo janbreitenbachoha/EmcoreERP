@@ -12,7 +12,7 @@
               type="text"
               class="form-control"
               id="bestellung"
-              v-model="position.bestellung"
+              v-model="position.order.bestellung"
             />
           </div>
           <div class="col-6">
@@ -21,7 +21,7 @@
               type="text"
               class="form-control"
               id="menge"
-              v-model="position.menge"
+              v-model="position.produc.menge"
             />
           </div>
           <div class="col-6">
@@ -196,14 +196,9 @@ export default {
   data() {
     return {
       position: this.item,
-      nummer: this.id,
     };
   },
   methods: {
-    deletOrder() {
-      this.$emit("clear-order", this.nummer);
-      this.$emit("close"); 
-    },
 
     addSpannung() {
       this.position.laufzeit.push({});
