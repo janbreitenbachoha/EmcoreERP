@@ -20,6 +20,7 @@
             </ConfirmDialog>
             <ConfirmDialog group="positionDialog"></ConfirmDialog>
           </div>
+          {{ test }}
           <div class="card mt-4" v-if="product">
             <div class="row no-gutters">
               <div class="col-md-12">
@@ -136,6 +137,7 @@ import ConfirmDialog from "primevue/confirmdialog";
 import Toast from "primevue/toast";
 // import TheBestellungen from "@/components/TheBestellungen.vue";
 import ModalComponent from "@/components/ModalComponent.vue";
+
 export default {
   name: "ReadProductPage",
   components: {
@@ -155,16 +157,19 @@ export default {
     };
   },
 
-  props: {
-    id: String,
-  },
+  props: ['id', 'test'],
   /*   data() {
     return {
       id: null,
     };
   }, */
+  created(){
+    console.log(this.test)
+    console.log(this.id)
+  },
   computed: {
     product() {
+      
       return this.$store.getters.product(this.id);
     },
     kunden() {
@@ -175,7 +180,6 @@ export default {
 
       for (const customer of Object.values(this.kunden)) {
         for (const [orderId, order] of Object.entries(customer.bestellungen)) {
-          console.log(orderId);
 
           const filteredProducts = Object.values(
             this.product.bestellungen
@@ -192,7 +196,6 @@ export default {
           }
         }
       }
-      console.log(matchingOrders);
 
       return matchingOrders;
     },

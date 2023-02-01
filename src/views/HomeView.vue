@@ -40,7 +40,8 @@ export default {
   computed: {
     filteredUsers() {
       // Kopie des users-Arrays erstellen
-      let users = this.$store.getters.products;
+      let users = this.$store.getters.all;
+      
       // Wenn search nicht leer ist, Ergebnisse filtern
       if (this.search) {
         // Sucheingabe in Kleinbuchstaben umwandeln und Sonderzeichen entfernen
@@ -49,15 +50,17 @@ export default {
           .replace(/[+\-/\\(){}[\]<>!§$%&=?*#€¿&_.,:;]/g, "");
         // Sucheingabe in ein Array von Wörtern umwandeln
         const searchWords = search.split(/\s+/);
+        
+        
         users = users.filter((user) => {
           // Suche in den Feldern name und email durchführen
-          let name = user.kunde.name
+          let name = user.artikel.kunde.name
             .toLowerCase()
             .replace(/[+\-/\\(){}[\]<>!§$%&=?*#€¿&_.,:;]/g, "");
-          let bezeichnung = user.bezeichnung
+          let bezeichnung = user.artikel.bezeichnung
             .toLowerCase()
             .replace(/[+\-/\\(){}[\]<>!§$%&=?*#€¿&_.,:;]/g, "");
-          let zeichnungsnummer = user.zeichnungsnummer
+          let zeichnungsnummer = user.artikel.zeichnungsnummer
             .toLowerCase()
             .replace(/[+\-/\\(){}[\]<>!§$%&=?*#€¿&_.,:;]/g, "");
           // Prüfen, ob alle Suchwörter in name oder email vorkommen
@@ -70,8 +73,6 @@ export default {
           });
         });
       }
-
-
       return users;
     },
   },

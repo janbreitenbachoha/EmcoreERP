@@ -16,11 +16,13 @@ var mongoObjectId = function () {
 export default createStore({
 	state: {
 		products: [],
+    all: [],
 		kunden: [],
 		bestellungen: [],
 	},
 	getters: {
 		products: (state) => state.products,
+    all: (state) => state.all,
 		kunden: (state) => state.kunden,
 		bestellung: (state) => state.bestellungen,
 		product: (state) => (id) =>
@@ -29,6 +31,9 @@ export default createStore({
 	mutations: {
 		setProducts(state, payload) {
 			state.products = payload;
+		},
+    setAll(state, payload) {
+			state.all = payload;
 		},
 		setBestellungen(state, payload) {
 			state.bestellungen = payload;
@@ -59,7 +64,7 @@ export default createStore({
 				});
 		},
 
-		getArticleAndOrderData() {
+		getArticleAndOrderData(context) {
 			axios
 				.get(`https://emcore-d87fa-default-rtdb.firebaseio.com/artikel.json`)
 				.then((articleResponse) => {
@@ -73,7 +78,6 @@ export default createStore({
               
 
 							Object.entries(articleData).forEach(([index, article]) => {
-                console.log(index)
 								let orders = [];
 								Object.values(orderData).forEach((order) => {
 									if (article.kunde.name === order.name && order.bestellungen) {
@@ -94,15 +98,15 @@ export default createStore({
 										});
 									}
 								});
+                article['id'] = index;
 								const combinedArtikel = {
-									Artikel: article,
+									artikel: article,
 									orders: orders,
 								};
 								combinedData.push(combinedArtikel);
 							});
 
-							console.log(combinedData);
-							return combinedData;
+							context.commit("setAll", combinedData);
 						});
 				});
 		},
