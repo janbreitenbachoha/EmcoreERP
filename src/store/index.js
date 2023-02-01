@@ -16,13 +16,13 @@ var mongoObjectId = function () {
 export default createStore({
 	state: {
 		products: [],
-    all: [],
+		all: [],
 		kunden: [],
 		bestellungen: [],
 	},
 	getters: {
 		products: (state) => state.products,
-    all: (state) => state.all,
+		all: (state) => state.all,
 		kunden: (state) => state.kunden,
 		bestellung: (state) => state.bestellungen,
 		product: (state) => (id) =>
@@ -32,7 +32,7 @@ export default createStore({
 		setProducts(state, payload) {
 			state.products = payload;
 		},
-    setAll(state, payload) {
+		setAll(state, payload) {
 			state.all = payload;
 		},
 		setBestellungen(state, payload) {
@@ -75,7 +75,6 @@ export default createStore({
 						.then((orderResponse) => {
 							const orderData = orderResponse.data;
 							const combinedData = [];
-              
 
 							Object.entries(articleData).forEach(([index, article]) => {
 								let orders = [];
@@ -98,7 +97,7 @@ export default createStore({
 										});
 									}
 								});
-                article['id'] = index;
+								article["id"] = index;
 								const combinedArtikel = {
 									artikel: article,
 									orders: orders,

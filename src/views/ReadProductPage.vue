@@ -20,7 +20,6 @@
             </ConfirmDialog>
             <ConfirmDialog group="positionDialog"></ConfirmDialog>
           </div>
-          {{ test }}
           <div class="card mt-4" v-if="product">
             <div class="row no-gutters">
               <div class="col-md-12">
@@ -157,19 +156,21 @@ export default {
     };
   },
 
-  props: ['id', 'test'],
+  props: {
+    id: String,
+  },
   /*   data() {
     return {
       id: null,
     };
   }, */
   created(){
-    console.log(this.test)
-    console.log(this.id)
+    let users = this.$store.getters.all;
+      console.log(users)
+      
   },
   computed: {
     product() {
-      
       return this.$store.getters.product(this.id);
     },
     kunden() {
