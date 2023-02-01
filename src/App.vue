@@ -16,6 +16,7 @@ export default {
     this.$store.dispatch("fetchProducts");
     this.$store.dispatch("fetchKunden");
     this.$store.dispatch("fetchBestellungen");
+    this.$store.dispatch("fetchTest");
   },
   methods: {},
 };
