@@ -70,10 +70,11 @@ export default createStore({
 						.then((orderResponse) => {
 							const orderData = orderResponse.data;
 							const combinedData = [];
+              
 
-							Object.values(articleData).forEach((article) => {
+							Object.entries(articleData).forEach(([index, article]) => {
+                console.log(index)
 								let orders = [];
-
 								Object.values(orderData).forEach((order) => {
 									if (article.kunde.name === order.name && order.bestellungen) {
 										const articleOrders = Object.values(order.bestellungen);
