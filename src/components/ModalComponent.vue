@@ -12,7 +12,7 @@
               type="text"
               class="form-control"
               id="bestellung"
-              v-model="position.order.bestellung"
+              v-model="order.bestellung"
             />
           </div>
           <div class="col-6">
@@ -21,7 +21,7 @@
               type="text"
               class="form-control"
               id="menge"
-              v-model="position.produc.menge"
+              v-model="produkt.menge"
             />
           </div>
           <div class="col-6">
@@ -196,7 +196,19 @@ export default {
   data() {
     return {
       position: this.item,
+      order: this.id,
     };
+  },
+  computed:{
+    produkt() {
+      let users = Object.values(this.position.artikel.bestellungen)
+      console.log(this.order.id)
+      console.log(this.position.artikel.bestellungen)
+      let result = users.filter((p) => p.bestellungID === this.order.id);
+      let resu = result[0];
+      console.log(resu);
+      return resu;
+    },
   },
   methods: {
 

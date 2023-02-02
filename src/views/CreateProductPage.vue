@@ -103,7 +103,6 @@ export default {
       zeichnungsnummer : this.product.zeichnungsnummer,
       kunde : {
       kundenID: this.product.kunde.id,
-      name: this.product.kunde.name,
     }
     }
 
