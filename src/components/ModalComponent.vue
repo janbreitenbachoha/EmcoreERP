@@ -31,7 +31,7 @@
               class="form-control"
               id="preis"
               aria-describedby="emailHelp"
-              v-model="position.preis"
+              v-model="produkt.preis"
             />
           </div>
           <div class="col-6">
@@ -41,7 +41,7 @@
               class="form-control"
               id="Werkstoff"
               aria-describedby="emailHelp"
-              v-model="position.werkstoff"
+              v-model="produkt.werkstoff"
             />
           </div>
           <div class="col-4">
@@ -51,7 +51,7 @@
               class="form-control"
               id="masse"
               aria-describedby="emailHelp"
-              v-model="position.masse"
+              v-model="produkt.masse"
             />
           </div>
           <div class="col-4">
@@ -61,7 +61,7 @@
               class="form-control"
               id="masse"
               aria-describedby="emailHelp"
-              v-model="position.lieferant"
+              v-model="produkt.lieferant"
             />
           </div>
           <div class="col-4">
@@ -71,7 +71,7 @@
               class="form-control"
               id="masse"
               aria-describedby="emailHelp"
-              v-model="position.preisMaterial"
+              v-model="produkt.preisMaterial"
             />
           </div>
           <div class="col-6">
@@ -81,7 +81,7 @@
               class="form-control"
               id="masse"
               aria-describedby="emailHelp"
-              v-model="position.oberflaeche"
+              v-model="produkt.oberflaeche"
             />
           </div>
           <div class="col-6">
@@ -91,7 +91,7 @@
               class="form-control"
               id="masse"
               aria-describedby="emailHelp"
-              v-model="position.oberflaecheLieferant"
+              v-model="produkt.oberflaecheLieferant"
             />
           </div>
           <div class="col-12">
@@ -101,7 +101,7 @@
               class="form-control"
               id="bemerkungen"
               aria-describedby="emailHelp"
-              v-model="position.bemerkungen"
+              v-model="produkt.bemerkungen"
             />
           </div>
           <table class="table">
@@ -115,7 +115,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(test, lala) in position.laufzeit" :key="lala">
+              <tr v-for="(test, lala) in produkt.laufzeit" :key="lala">
                 <th scope="row">{{ lala + 1 }}</th>
                 <td>
                   <input
@@ -213,10 +213,10 @@ export default {
   methods: {
 
     addSpannung() {
-      this.position.laufzeit.push({});
+      this.produkt.laufzeit.push({});
     },
     deleteSpannung(id, spannung) {
-      this.position.laufzeit.splice(spannung, 1);
+      this.produkt.laufzeit.splice(spannung, 1);
     },
     hideModal() {
       this.$emit("close");

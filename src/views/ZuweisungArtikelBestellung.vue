@@ -60,7 +60,7 @@
                 </td>
                 <td>
                   <button
-                    :disabled="aktiviert(artikel.id)"
+                    :disabled="aktiviert(artikel.id) || !this.inputValues[index]"
                     @click="hinzu(artikel, inputValues[index])"
                   >
                     Hinzufügen
@@ -110,7 +110,7 @@ export default {
 
     sort() {
       const filteredProducts = Object.values(this.product).filter(
-        (p) => p.kunde.name === this.kunde.name
+        (p) => p.kunde.kundenID === this.kunde.id
       );
 
       // Kopie des users-Arrays erstellen
@@ -159,6 +159,7 @@ export default {
     },
     updateValue(index, value) {
       this.inputValues[index] = value;
+      console.log(this.inputValues)
     },
     hinzu(id, menge) {
       

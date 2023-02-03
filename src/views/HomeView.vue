@@ -7,7 +7,7 @@
       placeholder="Artikel Suchen"
       aria-label="default input example"
     />
-    <button class="col-2 p-2 btn btn-primary">Neuen Artikel Anlegen</button>
+    <button class="col-2 p-2 btn btn-primary"><router-link to="/anlegen" class="nav-link">Artikel anlegen</router-link></button>
   </div>
   <div class="d-flex justify-content-center">
     <div class="row container d-flex justify-content-center">

@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="card-body">
-      <h5 class="card-title">{{ product.artikel.kunde.name }}</h5>
+      <h5 class="card-title">{{ product.data.name }}</h5>
       <h6 class="card-title">{{ product.artikel.bezeichnung }}</h6>
       <p class="card-text">{{ product.artikel.zeichnungsnummer }}</p>
       <!--       <router-link
@@ -21,6 +21,9 @@ export default {
   name: "ProductListItem",
   props: {
     product: Object,
+  },
+  created(){
+
   },
   computed: {
   },
