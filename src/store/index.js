@@ -107,31 +107,11 @@ export default createStore({
 								};
 								combinedData.push(combinedArtikel);
 							});
-							console.log(combinedData);
+							
 							context.commit("setAll", combinedData);
 						});
 				});
 		},
-
-		fetchBestellungen(context) {
-			axios
-				.get(`https://emcore-d87fa-default-rtdb.firebaseio.com/kunden.json`)
-				.then((response) => {
-					const bestellungDO = [];
-
-					for (const id in response.data) {
-						bestellungDO.push({
-							...response.data[id].bestellungen,
-						});
-					}
-
-					context.commit("setBestellungen", bestellungDO);
-				})
-				.catch((error) => {
-					console.log(error);
-				});
-		},
-
 		updateArtikel(content, payload) {
 			const productItem = {
 				id: payload.id,
@@ -158,6 +138,20 @@ export default createStore({
 			axios
 				.put(
 					`https://emcore-d87fa-default-rtdb.firebaseio.com/artikel/${payload.id}.json`,
+					payload
+				)
+				.then((response) => {
+					console.log(response);
+				})
+				.catch((error) => {
+					throw new Error(error);
+				});
+		},
+
+		updateKunde(content, payload) {
+			axios
+				.put(
+					`https://emcore-d87fa-default-rtdb.firebaseio.com/kunden/${payload.id}.json`,
 					payload
 				)
 				.then((response) => {

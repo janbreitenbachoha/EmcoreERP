@@ -6,16 +6,17 @@
 <script>
 import TheNavbar from "@/components/TheNavbar";
 
+
 export default {
   name: "App",
   components: {
     TheNavbar,
   },
+  
   computed: {},
   created() {
     this.$store.dispatch("fetchProducts");
     this.$store.dispatch("fetchKunden");
-    this.$store.dispatch("fetchBestellungen");
     this.$store.dispatch("getArticleAndOrderData");
   },
   methods: {},

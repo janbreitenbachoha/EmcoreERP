@@ -1,7 +1,6 @@
 <template>
   <TheShopLayout>
     <template #default>
-
       <div class="container">
         <Toast />
         <div class="row m-5">
@@ -84,44 +83,44 @@ export default {
   },
   methods: {
     createProduct() {
+      if (!this.product.kunde || !this.product.bezeichnung) {
+        console.log("leer");
+        this.$toast.add({
+          severity: "error",
+          summary: "Achtung",
+          detail: "Feld darf nicht leer sein",
+          life: 3000,
+        });
+      } else {
+        const name = {
+          bezeichnung: this.product.bezeichnung,
+          zeichnungsnummer: this.product.zeichnungsnummer,
+          kunde: {
+            kundenID: this.product.kunde.id,
+          },
+        };
 
-				if (!this.product.kunde || !this.product.bezeichnung) {
-					console.log("leer");
-					this.$toast.add({
-						severity: "error",
-						summary: "Achtung",
-						detail: "Feld darf nicht leer sein",
-						life: 3000,
-					});
-				} else {
+        console.log(name);
 
-        
-      
+        this.$store.dispatch("storeProduct", name);
+        this.$toast.add({
+          severity: "success",
+          summary: "Gespeichert",
+          detail: "Artikel wurde angelegt",
+          life: 3000,
+        });
 
-    const name = {
-      bezeichnung: this.product.bezeichnung,
-      zeichnungsnummer : this.product.zeichnungsnummer,
-      kunde : {
-      kundenID: this.product.kunde.id,
-    }
-    }
+        this.product.kunde = "";
+        this.product.bezeichnung = "";
+        this.product.zeichnungsnummer = "";
 
-    console.log(name)
-
-      this.$store.dispatch("storeProduct", name);
-      this.$toast.add({severity:'success', summary: 'Gespeichert', detail:'Artikel wurde angelegt', life: 3000});
-
-      this.product.kunde="";
-      this.product.bezeichnung="";
-      this.product.zeichnungsnummer="";
-
-      setTimeout(() => {
-        this.$store.dispatch("fetchProducts");
-        this.$store.dispatch("fetchKunden");
-      }, 500);
-    }
+        setTimeout(() => {
+          this.$store.dispatch("fetchProducts");
+          this.$store.dispatch("fetchKunden");
+          this.$store.dispatch("getArticleAndOrderData");
+        }, 500);
+      }
     },
-
   },
 };
 </script>

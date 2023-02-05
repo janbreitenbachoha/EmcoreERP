@@ -38,17 +38,6 @@ const routes = [
 			import(/*webpackChunkName: 'group-shop' */ "@/views/ReadProductPage.vue"),
       props: true,
 	},
-	{
-		path: "/shop/create/order/:id",
-		name: "createOrder",
-		component: () =>
-			import(/*webpackChunkName: 'group-shop' */ "@/views/CreateOrderPage.vue"),
-		props: true,
-		meta: {
-			requiresAuth: true,
-			enterTransition: "rubberBand",
-		},
-	},
 ];
 
 const router = createRouter({
