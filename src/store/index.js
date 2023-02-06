@@ -114,7 +114,7 @@ export default createStore({
 		},
 		updateArtikel(content, payload) {
 			const productItem = {
-				id: payload.id,
+				_ID: payload.id,
 				kunde: payload.kunde,
 				bezeichnung: payload.bezeichnung,
 				zeichnungsnummer: payload.zeichnungsnummer,
@@ -166,6 +166,7 @@ export default createStore({
 			const ruluf = [...payload.artikel];
 			for (let item of ruluf) {
 				const laden = {
+					_ID: mongoObjectId(),
 					artikelID: item.artikelID,
 					status: item.status,
 				};
@@ -185,6 +186,7 @@ export default createStore({
 				//console.log(item);
 
 				let productItem = {
+					_ID: mongoObjectId(),
 					bestellungID: payload.bestellung.orderId,
 					menge: item.menge,
 					laufzeit: [
@@ -244,6 +246,7 @@ export default createStore({
 			var id = payload.id;
 
 			var productItem = {
+				_ID: mongoObjectId(),
 				show: false,
 				bestellung: payload.bestellung,
 				menge: payload.menge,
@@ -314,6 +317,7 @@ export default createStore({
 		storeOrder(context, payload) {
 			var id = payload.kunde.id;
 			const productItem = {
+				_ID: mongoObjectId(),
 				bestellung: payload.bestellung,
 				aktiv: true,
 				lieferdatum: payload.datum,
