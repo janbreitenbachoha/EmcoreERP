@@ -47,22 +47,21 @@ export default createStore({
     },
   },
   actions: {
-    fetchProducts(context) {
-      axios
-        .get(`https://emcore-d87fa-default-rtdb.firebaseio.com/artikel.json`)
-        .then((response) => {
-          const productsDO = [];
-          for (const id in response.data) {
-            productsDO.push({
-              id: id,
-              ...response.data[id],
-            });
-          }
-          context.commit("setProducts", productsDO);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    async fetchProducts(context) {
+      try {
+        const response = await axios.get(
+          `https://emcore-d87fa-default-rtdb.firebaseio.com/artikel.json`
+        );
+        if (response.data === null) return;
+
+        const productsDO = Object.keys(response.data).map((id) => ({
+          id,
+          ...response.data[id],
+        }));
+        context.commit("setProducts", productsDO);
+      } catch (error) {
+        console.error(error);
+      }
     },
 
     getArticleAndOrderData(context) {
@@ -113,7 +112,7 @@ export default createStore({
             });
         });
     },
-    updateArtikel(content, payload) {
+    async updateArtikel(content, payload) {
       const productItem = {
         _ID: payload.id,
         kunde: payload.kunde,
@@ -122,74 +121,124 @@ export default createStore({
         werkstoff: payload.werkstoff,
         bestellungen: [],
       };
-      axios
-        .put(
+
+      try {
+        const response = await axios.put(
           `https://emcore-d87fa-default-rtdb.firebaseio.com/artikel/${productItem.id}.json`,
           productItem
-        )
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((error) => {
-          throw new Error(error);
-        });
+        );
+        console.log(response);
+      } catch (error) {
+        throw new Error(error);
+      }
     },
 
-    updateOrder(content, payload) {
-      axios
-        .put(
+    async updateOrder(content, payload) {
+      try {
+        const response = await axios.put(
           `https://emcore-d87fa-default-rtdb.firebaseio.com/artikel/${payload.id}.json`,
           payload
-        )
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((error) => {
-          throw new Error(error);
-        });
+        );
+        console.log(response);
+      } catch (error) {
+        throw new Error(error);
+      }
     },
 
-    updateKunde(content, payload) {
-      axios
-        .put(
-          `https://emcore-d87fa-default-rtdb.firebaseio.com/kunden/${payload.id}.json`,
+    async updateKunde(context, payload) {
+      try {
+        const response = await axios.put(
+          "https://emcore-d87fa-default-rtdb.firebaseio.com/kunden/${payload.id}.json",
           payload
-        )
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((error) => {
-          throw new Error(error);
-        });
+        );
+        console.log(response);
+      } catch (error) {
+        throw new Error(error);
+      }
     },
 
-    zuweisenArtikelBestellung(content, payload) {
-      const ruluf = [...payload.artikel];
-      for (let item of ruluf) {
-        const laden = {
-          _ID: mongoObjectId(),
-          artikelID: item.artikelID,
-          status: item.status,
-        };
+    async zuweisenArtikelBestellung(context, payload) {
+      try {
+        const ruluf = [...payload.artikel];
+        for (const item of ruluf) {
+          const laden = {
+            _ID: mongoObjectId(),
+            artikelID: item.artikelID,
+            status: item.status,
+          };
 
-        axios
-          .post(
+          await axios.post(
             `https://emcore-d87fa-default-rtdb.firebaseio.com/kunden/${payload.kunde.id}/bestellungen/${payload.bestellung.orderId}/artikel.json`,
             laden
-          )
-          .then((response) => {
-            console.log(response);
-          })
-          .catch((error) => {
-            throw new Error(error);
-          });
+          );
 
-        //console.log(item);
+          const productItem = {
+            _ID: mongoObjectId(),
+            bestellungID: payload.bestellung.orderId,
+            menge: item.menge,
+            laufzeit: [
+              {
+                ruest: 0,
+                laufzeit: 0,
+                wer: "",
+                maschine: "",
+              },
+            ],
+          };
 
-        let productItem = {
+          await axios.post(
+            `https://emcore-d87fa-default-rtdb.firebaseio.com/artikel/${item.artikelID}/bestellungen.json`,
+            productItem
+          );
+        }
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
+
+    async deleteArtikelNew(content, payload) {
+      try {
+        await axios.delete(
+          `https://emcore-d87fa-default-rtdb.firebaseio.com/artikel/${payload.artikel.id}.json`
+        );
+
+        for (const order of payload.orders) {
+          for (const [index, find] of Object.entries(order.artikel)) {
+            if (payload.artikel.id === find.artikelID) {
+              await deleteFromKunde(
+                payload.artikel.kunde.kundenID,
+                order.id,
+                index
+              );
+            }
+          }
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    },
+
+    async deleteFromKunde(kundenID, orderID, index) {
+      try {
+        await axios.delete(
+          `https://emcore-d87fa-default-rtdb.firebaseio.com/kunden/${kundenID}/bestellungen/${orderID}/artikel/${index}.json`
+        );
+      } catch (error) {
+        console.error(error);
+      }
+    },
+
+    async addOrder(content, payload) {
+      try {
+        const id = payload.id;
+        const productItem = {
           _ID: mongoObjectId(),
-          bestellungID: payload.bestellung.orderId,
-          menge: item.menge,
+          show: false,
+          bestellung: payload.bestellung,
+          menge: payload.menge,
+          preis: payload.preis,
+          werkstoff: payload.werkstoff,
+          masse: payload.masse,
           laufzeit: [
             {
               ruest: 0,
@@ -200,169 +249,81 @@ export default createStore({
           ],
         };
 
-        axios
-          .post(
-            `https://emcore-d87fa-default-rtdb.firebaseio.com/artikel/${item.artikelID}/bestellungen.json`,
-            productItem
-          )
-          .then((response) => {
-            console.log(response);
-          })
-          .catch((error) => {
-            throw new Error(error);
-          });
-      }
-    },
-
-    clearOrder(content, [payload, id]) {
-      const productItem = {
-        id: payload.id,
-        orderId: id,
-      };
-      axios
-        .delete(
-          `https://emcore-d87fa-default-rtdb.firebaseio.com/artikel/${productItem.id}/bestellungen/${productItem.orderId}.json`
-        )
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((error) => {
-          throw new Error(error);
-        });
-    },
-    deleteArtikel(content, payload) {
-        axios
-          .delete(
-            `https://emcore-d87fa-default-rtdb.firebaseio.com/artikel/${payload.artikel.id}.json`
-          )
-          .then((response) => {
-      for (const order of payload.orders) {
-        for (const [index, find] of Object.entries(order.artikel)) {
-          if (payload.artikel.id === find.artikelID) {
-            axios
-              .delete(
-                `https://emcore-d87fa-default-rtdb.firebaseio.com/kunden/${payload.artikel.kunde.kundenID}/bestellungen/${order.id}/artikel/${index}.json`
-              )
-              .then((response) => {
-                console.log(response);
-              })
-              .catch((error) => {
-                throw new Error(error);
-              });
-          }
-        }
-      }
-      })
-      .catch((error) => {
-        throw new Error(error);
-      });
-    },
-
-    addOrder(content, payload) {
-      var id = payload.id;
-
-      var productItem = {
-        _ID: mongoObjectId(),
-        show: false,
-        bestellung: payload.bestellung,
-        menge: payload.menge,
-        preis: payload.preis,
-        werkstoff: payload.werkstoff,
-        masse: payload.masse,
-        laufzeit: [
-          {
-            ruest: 0,
-            laufzeit: 0,
-            wer: "",
-            maschine: "",
-          },
-        ],
-      };
-
-      axios
-        .post(
+        const response = await axios.post(
           `https://emcore-d87fa-default-rtdb.firebaseio.com/artikel/${id}/bestellungen.json`,
           productItem
-        )
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((error) => {
-          throw new Error(error);
-        });
+        );
+
+        console.log(response);
+      } catch (error) {
+        console.error(error);
+      }
     },
 
-    fetchKunden(context) {
-      axios
-        .get(`https://emcore-d87fa-default-rtdb.firebaseio.com/kunden.json`)
-        .then((response) => {
-          const kundenDO = [];
-          for (const id in response.data) {
-            kundenDO.push({
-              id: id,
-              ...response.data[id],
-            });
-          }
-          context.commit("setKunden", kundenDO);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    async fetchKunden(context) {
+      try {
+        const response = await axios.get(
+          `https://emcore-d87fa-default-rtdb.firebaseio.com/kunden.json`
+        );
+        if (response.data === null) return;
+
+        const kundenDO = Object.keys(response.data).map((id) => ({
+          id,
+          ...response.data[id],
+        }));
+        context.commit("setKunden", kundenDO);
+      } catch (error) {
+        console.error(error);
+      }
     },
 
-    storeProduct(context, payload) {
-      const productItem = {
-        _ID: mongoObjectId(),
-        kunde: payload.kunde,
-        bezeichnung: payload.bezeichnung,
-        zeichnungsnummer: payload.zeichnungsnummer,
-      };
-      axios
-        .post(
+    async storeProduct(context, payload) {
+      try {
+        const productItem = {
+          _ID: mongoObjectId(),
+          kunde: payload.kunde,
+          bezeichnung: payload.bezeichnung,
+          zeichnungsnummer: payload.zeichnungsnummer,
+        };
+        const response = await axios.post(
           `https://emcore-d87fa-default-rtdb.firebaseio.com/artikel.json`,
           productItem
-        )
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((error) => {
-          throw new Error(error);
-        });
+        );
+        console.log(response);
+      } catch (error) {
+        console.error(error);
+      }
     },
 
-    storeOrder(context, payload) {
-      var id = payload.kunde.id;
-      const productItem = {
-        _ID: mongoObjectId(),
-        bestellung: payload.bestellung,
-        aktiv: true,
-        lieferdatum: payload.datum,
-      };
-      axios
-        .post(
+    async storeOrder(context, payload) {
+      try {
+        const id = payload.kunde.id;
+        const productItem = {
+          _ID: mongoObjectId(),
+          bestellung: payload.bestellung,
+          aktiv: true,
+          lieferdatum: payload.datum,
+        };
+        const response = await axios.post(
           `https://emcore-d87fa-default-rtdb.firebaseio.com/kunden/${id}/bestellungen.json`,
           productItem
-        )
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((error) => {
-          throw new Error(error);
-        });
+        );
+        console.log(response);
+      } catch (error) {
+        console.error(error);
+      }
     },
-    createCustomer(context, payload) {
-      console.log(payload);
-      axios
-        .post(
+
+    async createCustomer(context, payload) {
+      try {
+        const response = await axios.post(
           `https://emcore-d87fa-default-rtdb.firebaseio.com/kunden.json`,
           payload
-        )
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((error) => {
-          throw new Error(error);
-        });
+        );
+        console.log(response);
+      } catch (error) {
+        console.error(error);
+      }
     },
   },
   modules: {},
