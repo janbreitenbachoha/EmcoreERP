@@ -321,6 +321,22 @@ export default createStore({
 				console.error(error);
 			}
 		},
+
+    async sperren(context, payload) {
+			try {
+        console.log(payload)
+        const sperre ={
+          sperre: payload.sperren
+        }
+				const response = await axios.patch(
+					`https://emcore-d87fa-default-rtdb.firebaseio.com/artikel/${payload.id}.json`,
+					sperre
+				);
+				console.log(response);
+			} catch (error) {
+				console.error(error);
+			}
+		},
 	},
 	modules: {},
 });

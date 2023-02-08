@@ -136,6 +136,7 @@ import Toast from "primevue/toast";
 // import TheBestellungen from "@/components/TheBestellungen.vue";
 import ModalComponent from "@/components/ModalComponent.vue";
 import TheShopLayout from "@/views/TheShopLayout";
+import axios from "axios";
 export default {
   name: "ReadProductPage",
   components: {
@@ -155,6 +156,19 @@ export default {
     };
   },
 
+  beforeUnmount(){
+    const sperren = {
+      id: this.id,
+      sperren: false,
+    }
+    this.$store.dispatch("sperren", sperren);
+    window.removeEventListener('beforeunload', this.releaseArticle);
+  },
+
+  mounted() {
+    
+  },
+
   props: {
     id: String,
   },
@@ -163,12 +177,18 @@ export default {
       id: null,
     };
   }, */
-  created() {},
+  created() {
+    const sperren = {
+      id: this.id,
+      sperren: true,
+    }
+    this.$store.dispatch("sperren", sperren);
+    window.addEventListener('beforeunload', this.releaseArticle);
+  },
   computed: {
     produkt() {
       let users = this.$store.getters.all;
       let result = users.find((p) => p.artikel.id === this.id);
-      console.log(result);
       return result;
     },
     product() {
@@ -204,6 +224,15 @@ export default {
     },
   },
   methods: {
+    releaseArticle() {
+      const sperren = {
+      sperre: false,
+    }
+    axios.patch(
+					`https://emcore-d87fa-default-rtdb.firebaseio.com/artikel/${this.id}.json`,
+					sperren
+				);
+    },
     openModal(item, test) {
       this.modalItem = item;
       this.modalId = test;
