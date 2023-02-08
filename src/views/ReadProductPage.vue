@@ -218,7 +218,7 @@ export default {
         icon: "pi pi-info-circle",
         acceptClass: "p-button-danger",
         accept: () => {
-          this.$store.dispatch("deleteArtikelNew", this.produkt);
+          this.$store.dispatch("deleteArtikel", this.produkt);
           setTimeout(() => {
             this.$store.dispatch("fetchProducts");
             this.$store.dispatch("fetchKunden");
