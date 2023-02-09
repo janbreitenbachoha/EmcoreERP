@@ -26,6 +26,11 @@ export default {
   components: {
     ProductListItem,
   },
+  created(){
+    this.$store.dispatch("fetchProducts");
+    this.$store.dispatch("fetchKunden");
+    this.$store.dispatch("getArticleAndOrderData");
+  },
   data() {
     return {
       search: "", // Variable für die Sucheingabe

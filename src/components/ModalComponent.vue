@@ -5,7 +5,7 @@
       <div class="modal-content">
         <span class="close" @click="hideModal">&times;</span>
         <div class="row p-2">
-          <div class="col-6">
+          <div class="col-4">
             <label for="bestellung">Bestellung</label>
             <input
               disabled
@@ -15,13 +15,22 @@
               v-model="order.bestellung"
             />
           </div>
-          <div class="col-6">
-            <label for="menge">Menge</label>
+          <div class="col-4">
+            <label for="menge">Bestellte Menge</label>
             <input
               type="text"
               class="form-control"
               id="menge"
               v-model="produkt.menge"
+            />
+          </div>
+          <div class="col-4">
+            <label for="menge">Gefertigte Menge</label>
+            <input
+              type="text"
+              class="form-control"
+              id="menge"
+              v-model="produkt.gefertigtMenge"
             />
           </div>
           <div class="col-6">
@@ -44,7 +53,7 @@
               v-model="produkt.werkstoff"
             />
           </div>
-          <div class="col-4">
+          <div class="col-3">
             <label for="masse">Rohmaterial</label>
             <input
               type="text"
@@ -54,7 +63,7 @@
               v-model="produkt.masse"
             />
           </div>
-          <div class="col-4">
+          <div class="col-3">
             <label for="masse">Lieferant</label>
             <input
               type="text"
@@ -64,7 +73,7 @@
               v-model="produkt.lieferant"
             />
           </div>
-          <div class="col-4">
+          <div class="col-3">
             <label for="masse">Material Preis stk.</label>
             <input
               type="text"
@@ -72,6 +81,16 @@
               id="masse"
               aria-describedby="emailHelp"
               v-model="produkt.preisMaterial"
+            />
+          </div>
+          <div class="col-3">
+            <label for="masse">Materialpreis pro Einheit</label>
+            <input
+              type="text"
+              class="form-control"
+              id="masse"
+              aria-describedby="emailHelp"
+              v-model="produkt.preisMaterialEinheit"
             />
           </div>
           <div class="col-6">

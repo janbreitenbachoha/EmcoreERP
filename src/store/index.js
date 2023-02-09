@@ -324,9 +324,11 @@ export default createStore({
 
     async sperren(context, payload) {
 			try {
+				var timestamp = ((new Date().getTime() / 1000) | 0).toString(16);
         console.log(payload)
         const sperre ={
-          sperre: payload.sperren
+          sperre: payload.sperren,
+		  sperreZeit:timestamp,
         }
 				const response = await axios.patch(
 					`https://emcore-d87fa-default-rtdb.firebaseio.com/artikel/${payload.id}.json`,
