@@ -1,6 +1,7 @@
 <template>
 	<TheShopLayout>
 		<template #default>
+			<div v-if="produkt">
 			<div v-if="!produkt.artikel.sperre">
 				<div class="row">
 					<div class="col-12">
@@ -70,7 +71,7 @@
 														<label for="zeichnungsnummer"
 															>Zeichnungsnummer</label
 														>
-                            {{ produkt.artikel.sperreZeit }}
+														{{ produkt.artikel.sperreZeit }}
 														<input
 															type="text"
 															class="form-control"
@@ -130,6 +131,18 @@
 					</div>
 				</div>
 			</div>
+			<div v-else class="mt-5">
+				<div class="card">
+					<div class="card-header">Achtung</div>
+					<div class="card-body">
+						<h5 class="card-title">Dieser Artikel wird bereits bearbeitet</h5>
+						<button class="btn btn-sm btn-danger col-2" @click="$router.go(-1)">
+							Zurück
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
 		</template>
 	</TheShopLayout>
 </template>
@@ -157,43 +170,46 @@
 				isActive: true,
 				isHidden: false,
 				ergebniss: {},
+				produkt: null,
 			};
 		},
 
 		beforeUnmount() {
-      if(!this.produkt.artikel.sperre){
-			const sperren = {
-				id: this.id,
-				sperren: false,
-			};
-			this.$store.dispatch("sperren", sperren);
-			window.removeEventListener("beforeunload", this.releaseArticle);
-    }
+			if (!this.produkt.artikel.sperre) {
+				const sperren = {
+					id: this.id,
+					sperre: false,
+				};
+				this.$store.dispatch("sperren", sperren);
+				window.removeEventListener("beforeunload", this.releaseArticle);
+			}
 		},
 
-    beforeCreate(){
-      this.$store.dispatch("getArticleAndOrderData");
-    },
+		async beforeCreate() {
+			await this.$store.dispatch("getArticleAndOrderData");
+		},
 
-		mounted(){
-      const sperren = {
+		async created() {
+			let users = await this.$store.getters.all;
+			let result = await users.find((p) => p.artikel.id === this.id);
+			this.produkt = result;
+		},
+
+		mounted() {
+			const sperren = {
 				id: this.id,
-				sperren: true,
+				sperre: true,
+				sperreZeit:new Date().getTime(),
 			};
 			this.$store.dispatch("sperren", sperren);
-			window.addEventListener("beforeunload", this.releaseArticle);
-    },
+			window.addEventListener("beforeunload", this.releaseArticle.bind(this));
+			
+		},
 
 		props: {
 			id: String,
 		},
 		computed: {
-			produkt() {
-				let users = this.$store.getters.all;
-				let result = users.find((p) => p.artikel.id === this.id);
-				console.log(result);
-				return result;
-			},
 			product() {
 				return this.$store.getters.product(this.id);
 			},
