@@ -4,6 +4,7 @@ import CreateProductPage from "../views/CreateProductPage.vue";
 import CreateCustomer from "../views/CreateCustomer.vue";
 import ErstelleBestellungSeite from "../views/ErstelleBestellungSeite.vue";
 import ZuweisungArtikelBestellung from "../views/ZuweisungArtikelBestellung.vue";
+import ChatTest from "../views/ChatTest.vue";
 
 const routes = [
 	{
@@ -30,6 +31,11 @@ const routes = [
 		path: "/KundeAnlegen",
 		name: "CreateCustomer",
 		component: CreateCustomer,
+	},
+	{
+		path: "/Chat",
+		name: "ChatTest",
+		component: ChatTest,
 	},
 	{
 		path: "/shop/read/product/:id",
