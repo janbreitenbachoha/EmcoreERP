@@ -26,7 +26,6 @@
 				</div>
 			</div>
 		</div>
-
 		<form class="input-container" @submit.prevent="sendMessage">
 			<div>
 				<label for="image-upload" class="image-button">
@@ -68,14 +67,20 @@
 			sendMessage() {
 				let message = null;
 				if (this.newImage) {
-					message = {
-						type: "image",
-						text: this.newMessage,
-						image: URL.createObjectURL(this.newImage),
-						timestamp: Date.now(),
-						fromMe: true,
+					const reader = new FileReader();
+					reader.readAsDataURL(this.newImage);
+					reader.onload = () => {
+						message = {
+							type: "image",
+							text: this.newMessage,
+							image: reader.result,
+							timestamp: Date.now(),
+							fromMe: true,
+						};
+						this.messages.push(message);
+						this.newImage = null;
+						this.newMessage = "";
 					};
-					this.newImage = null;
 				} else {
 					message = {
 						type: "text",
@@ -84,9 +89,9 @@
 						timestamp: Date.now(),
 						fromMe: true,
 					};
+					this.messages.push(message);
+					this.newMessage = "";
 				}
-				this.messages.push(message);
-				this.newMessage = "";
 			},
 			onImageSelected(event) {
 				this.newImage = event.target.files[0];
